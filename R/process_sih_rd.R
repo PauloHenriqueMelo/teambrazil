@@ -1,5 +1,7 @@
-' Process SIH variables from DataSUS
-#'
+
+
+
+
 #' This function processes key SIH variables, converting them to appropriate formats and labels, if the variables exist in the data.
 #'
 #' @param data A \code{data.frame} containing SIH data.
@@ -15,6 +17,24 @@
 
 
 process_sih_rd <- function(data) {
+
+  # Find the correct path to the HospitalCity.RData file
+  data_path <- system.file("data", "HospitalCity.RData", package = "pgsscdata")
+
+  # Check if the file exists before loading
+  if (file.exists(data_path)) {
+    load(data_path)  # This loads the HospitalCity dataset
+  } else {
+    stop("HospitalCity.RData not found in the package.")
+  }
+
+  # Continue processing with 'data' and 'HospitalCity'...
+  # Example: print a summary of HospitalCity
+  print(summary(HospitalCity))
+
+
+
+
   # List of variables to keep if they exist in the dataset
   variables_to_keep <- c(
     "ANO_CMPT", "MES_CMPT", "ESPEC", "N_AIH", "IDENT",
