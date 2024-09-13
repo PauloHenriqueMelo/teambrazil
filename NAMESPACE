@@ -2,6 +2,7 @@
 
 export("%>%")
 export(fetch_sigtab)
+export(fetch_sih_fiocruz)
 export(process_cnes)
 export(process_sia)
 export(process_sih)
