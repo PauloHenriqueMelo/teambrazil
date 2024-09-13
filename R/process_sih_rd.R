@@ -18,15 +18,29 @@
 
 process_sih_rd <- function(data) {
 
-  # Find the correct path to the HospitalCity.RData file
-  data_path <- system.file("data", "HospitalCity.RData", package = "pgsscdata")
 
-  # Check if the file exists before loading
-  if (file.exists(data_path)) {
-    load(data_path)  # This loads the HospitalCity dataset
-  } else {
-    stop("HospitalCity.RData not found in the package.")
-  }
+
+  # URL of the RData file
+  url <- "https://github.com/PauloHenriqueMelo/test/blob/main/data/HospitalCity.RData?raw=true"
+
+  # Temporary file to save the downloaded data
+  temp_file <- tempfile(fileext = ".rdata")
+
+  # Download the file from the URL
+  download.file(url, destfile = temp_file, mode = "wb")
+
+  # Load the dataset from the downloaded file
+  HospitalCity <- get(load(temp_file))
+
+
+
+
+
+
+  # Load the dataset from the 'data-raw' directory
+  HospitalCity <- get(load("R/HospitalCity.rData"))
+
+
   # List of variables to keep if they exist in the dataset
   variables_to_keep <- c(
     "ANO_CMPT", "MES_CMPT", "ESPEC", "N_AIH", "IDENT",
