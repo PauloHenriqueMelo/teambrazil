@@ -19,26 +19,10 @@
 process_sih_rd <- function(data) {
 
 
-
-  # URL of the RData file
-  url <- "https://github.com/PauloHenriqueMelo/test/blob/main/data/HospitalCity.RData?raw=true"
-
-  # Temporary file to save the downloaded data
-  temp_file <- tempfile(fileext = ".rdata")
-
-  # Download the file from the URL
-  download.file(url, destfile = temp_file, mode = "wb")
-
   # Load the dataset from the downloaded file
-  HospitalCity <- get(load(temp_file))
+  HospitalCity <- readr::read_csv("https://raw.githubusercontent.com/PauloHenriqueMelo/test/main/data/HospitalCity.csv")
 
 
-
-
-
-
-  # Load the dataset from the 'data-raw' directory
-  HospitalCity <- get(load("R/HospitalCity.rData"))
 
 
   # List of variables to keep if they exist in the dataset
