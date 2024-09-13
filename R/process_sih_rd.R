@@ -38,7 +38,7 @@ process_sih_rd <- function(data) {
       data$SEXO %in% c("0", "9") ~ NA_character_,
       TRUE ~ NA_character_
     )
-    data$SEXO <- as.factor(data$SEXO)
+    data$sex <- as.factor(data$SEXO)
   }
 
 
@@ -57,22 +57,22 @@ process_sih_rd <- function(data) {
       TRUE ~ NA_character_
     )
 
-    data$RACA_COR <- as.factor(data$RACA_COR)
+    data$race <- as.factor(data$RACA_COR)
   }
 
 
   # Process NASC variable (birth date)
   if ("NASC" %in% names(data)) {
-    data$NASC <- as.Date(data$NASC, format = "%Y%m%d")
+    data$DOB <- as.Date(data$NASC, format = "%Y%m%d")
   }
 
   # Process admission (DT_INTER) and discharge (DT_SAIDA) dates
   if ("DT_INTER" %in% names(data)) {
-    data$DT_INTER <- as.Date(data$DT_INTER, format = "%Y%m%d")
+    data$DT_HOSP <- as.Date(data$DT_INTER, format = "%Y%m%d")
   }
 
   if ("DT_SAIDA" %in% names(data)) {
-    data$DT_SAIDA <- as.Date(data$DT_SAIDA, format = "%Y%m%d")
+    data$DT_DISCHARGE <- as.Date(data$DT_SAIDA, format = "%Y%m%d")
   }
 
   # Process monetary values: VAL_SH, VAL_SP, VAL_TOT, VAL_UTI, VAL_UCI
@@ -82,6 +82,13 @@ process_sih_rd <- function(data) {
       data[[var]] <- as.numeric(data[[var]])
     }
   }
+
+  # DIAS_PERM
+  if("DIAS_PERM" %in% variables_names){
+    data <- data %>%
+      dplyr::mutate(LOS = as.numeric(.data$DIAS_PERM))
+  }
+
 
   # Process DIAS_PERM and US_TOT variables (numerical)
   numeric_vars <- c("DIAS_PERM", "US_TOT")
