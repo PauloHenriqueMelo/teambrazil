@@ -55,8 +55,6 @@ process_sih_rd <- function(data) {
   data <- data %>%
     dplyr::left_join(HospitalCity, by = "Hospital_CityCod")
 
-
-
   # Process RACA_COR variable
   if ("RACA_COR" %in% names(data)) {
     # Ensure RACA_COR is treated as character for consistency
