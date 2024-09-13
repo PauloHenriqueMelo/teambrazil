@@ -43,14 +43,18 @@ process_sih_rd <- function(data) {
 
   }
 
+  # Rename MUNIC_MOV to Hospital_CityCod in 'data'
+  data <- data %>%
+    dplyr::rename(Hospital_CityCod = MUNIC_MOV)
 
+  # Ensure both columns are numeric
+  data$Hospital_CityCod <- as.numeric(data$Hospital_CityCod)
+  HospitalCity$Hospital_CityCod <- as.numeric(HospitalCity$Hospital_CityCod)
 
-  if("MUNIC_MOV" %in% variables_names){
-    colnames(HospitalCity)[1] <- "MUNIC_MOV"
-    data <- data %>%
-      dplyr::mutate(MUNIC_MOV = as.numeric(.data$MUNIC_MOV)) %>%
-      dplyr::left_join(HospitalCity, by = "MUNIC_MOV")
-  }
+  # Perform the left join
+  data <- data %>%
+    dplyr::left_join(HospitalCity, by = "Hospital_CityCod")
+
 
 
   # Process RACA_COR variable
