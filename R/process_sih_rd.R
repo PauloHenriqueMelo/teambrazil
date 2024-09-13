@@ -44,14 +44,6 @@ process_sih_rd <- function(data) {
   }
 
 
-  # MUNIC_RES
-  if("MUNIC_RES" %in% variables_names){
-    colnames(tabMun)[1] <- "MUNIC_RES"
-    data <- data %>%
-      dplyr::mutate(MUNIC_RES = as.numeric(.data$MUNIC_RES)) %>%
-      dplyr::left_join(tabMun, by = "MUNIC_RES")
-  }
-
 
   if("MUNIC_MOV" %in% variables_names){
     colnames(HospitalCity)[1] <- "MUNIC_MOV"

@@ -17,7 +17,7 @@
 #'
 #' @export
 
-process_sih <- function(data, information_system = "SIH-RD", municipality_data = TRUE) {
+process_sih <- function(data, information_system = "SIH-RD", municipality_data = FALSE) {
   # Check information system
   available_information_system <- "SIH-RD"
   if(!(information_system %in% available_information_system)) stop("Health informaton system unknown.")
