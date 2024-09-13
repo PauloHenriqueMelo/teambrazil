@@ -1,0 +1,50 @@
+url: https://rfsaldanha.github.io/microdatasus/
+template:
+  bootstrap: 5
+  params:
+    ganalytics: G-2M7VLSRDCB
+
+navbar:
+  structure:
+    right: [github]
+
+reference:
+- title: "The package"
+  contents:
+  - microdatasus
+- title: "Fetch data"
+  contents:
+  - fetch_datasus
+  - fetch_sigtab
+- title: "Process data"
+  contents:
+  - process_sim
+  - process_sinasc
+  - process_sih
+  - process_sia
+  - process_cnes
+  - process_sinan_dengue
+  - process_sinan_zika
+  - process_sinan_chikungunya
+  - process_sinan_malaria
+- title: "Sample datasets"
+  contents:
+  - sim_do_sample
+  - sinasc_sample
+  - sih_rd_sample
+  - sia_pa_sample
+  - cnes_st_sample
+  - cnes_pf_sample
+  - sinan_dengue_sample
+  - sinan_zika_sample
+  - sinan_chikungunya_sample
+  - sinan_malaria_sample
+- title: "Reference datasets"
+  contents:
+  - tabMun
+  - paisnet
+  - sigtab
+  - tabNaturalidade
+  - equipe
+  - tabOcupacao
+  - tabCBO
