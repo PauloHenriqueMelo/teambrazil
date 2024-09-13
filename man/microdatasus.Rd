@@ -2,7 +2,8 @@
 % Please edit documentation in R/microdatasus.R
 \docType{package}
 \name{microdatasus}
-\alias{microdatasus-package}
+\alias{phmm2000}
+\alias{phmm2000-package}
 \alias{microdatasus}
 \title{microdatasus: Download and preprocess DataSUS files}
 \description{
@@ -11,8 +12,7 @@ Downloads microdata files (DBC format) from DataSUS and imports the files for us
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/rfsaldanha/microdatasus}
-  \item \url{https://rfsaldanha.github.io/microdatasus/}
+  \item \url{https://github.com/PauloHenriqueMelo/test}
   \item Report bugs at \url{https://github.com/rfsaldanha/microdatasus/issues}
 }
 

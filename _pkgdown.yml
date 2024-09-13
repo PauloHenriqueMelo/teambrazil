@@ -16,11 +16,13 @@ reference:
   contents:
   - fetch_datasus
   - fetch_sigtab
+  - fetch_sih_fiocruz
 - title: "Process data"
   contents:
   - process_sim
   - process_sinasc
   - process_sih
+  - process_sih_rd
   - process_sia
   - process_cnes
   - process_sinan_dengue

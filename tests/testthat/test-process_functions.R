@@ -18,6 +18,15 @@ test_that("sih rd works at 2016, 6-7", {
   expect_true("tbl_df" %in% class(sih))
 })
 
+
+test_that("sih_works at 2016, 6-7", {
+  sih <- process_sih_rd(data = sih_rd_sample)
+  expect_true("tbl_df" %in% class(sih))
+})
+
+
+
+
 test_that("sim do works", {
   sim <- process_sim(data = sim_do_sample, municipality_data = TRUE)
   expect_true("tbl_df" %in% class(sim))
