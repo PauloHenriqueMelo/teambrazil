@@ -27,14 +27,6 @@ process_sih_rd <- function(data) {
   } else {
     stop("HospitalCity.RData not found in the package.")
   }
-
-  # Continue processing with 'data' and 'HospitalCity'...
-  # Example: print a summary of HospitalCity
-  print(summary(HospitalCity))
-
-
-
-
   # List of variables to keep if they exist in the dataset
   variables_to_keep <- c(
     "ANO_CMPT", "MES_CMPT", "ESPEC", "N_AIH", "IDENT",

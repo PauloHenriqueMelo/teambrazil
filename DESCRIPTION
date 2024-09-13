@@ -14,7 +14,7 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 VignetteBuilder: knitr
 LazyData: true
-LazyDataCompression: none
+LazyDataCompression: xz
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
 Imports: 
@@ -29,7 +29,6 @@ Imports:
     magrittr,
     RCurl,
     read.dbc,
-    readr,
     rlang,
     stringi,
     tibble,
