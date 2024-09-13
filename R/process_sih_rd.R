@@ -22,7 +22,7 @@ process_sih_rd <- function(data) {
     "VAL_UTI", "US_TOT", "DT_INTER", "DT_SAIDA", "DIAG_PRINC", "DIAG_SECUN",
     "COBRANCA", "NATUREZA", "MUNIC_MOV", "COD_IDADE", "IDADE", "DIAS_PERM",
     "MORTE", "CAR_INT", "CNES", "CID_ASSO", "CID_MORTE", "INFEHOSP",
-    "COMPLEX", "FINANC", "FAEC_TP", "RACA_COR", "VAL_UCI", "MARCA_UCI"
+    "COMPLEX", "FINANC", "RACA_COR", "VAL_UCI", "MARCA_UCI"
   )
 
   # Keep only the variables that are present in the dataset
@@ -72,7 +72,7 @@ process_sih_rd <- function(data) {
 
   # Process admission (DT_INTER) and discharge (DT_SAIDA) dates
   if ("DT_INTER" %in% names(data)) {
-    data$DT_HOSP <- as.Date(data$DT_SAIDA, format = "%Y%m%d")
+    data$DT_HOSP <- as.Date(data$DT_INTER, format = "%Y%m%d")
     data <- data %>% dplyr::select(-DT_INTER) # Remove DT_SAIDA
   }
 
@@ -93,6 +93,7 @@ process_sih_rd <- function(data) {
   if("DIAS_PERM" %in% variables_names){
     data <- data %>%
       dplyr::mutate(LOS = as.numeric(.data$DIAS_PERM))
+      data <- data %>% dplyr::select(-DIAS_PERM)
   }
 
 
