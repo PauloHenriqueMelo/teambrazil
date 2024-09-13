@@ -12,6 +12,7 @@ BugReports: https://github.com/rfsaldanha/microdatasus/issues
 Description: Downloads data files from 'DataSUS' health information systems from <ftp.datasus.gov.br> and process the data, including labeling categorical variables.
 License: MIT + file LICENSE
 Encoding: UTF-8
+VignetteBuilder: knitr
 LazyData: true
 LazyDataCompression: xz
 Roxygen: list(markdown = TRUE)
@@ -35,9 +36,11 @@ Imports:
     zip
 Remotes:
     danicat/read.dbc        
-Suggests: 
+Suggests:
+    knitr,
+    rmarkdown,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Depends: 
-    R (>= 2.10)
+    R (>= 3.5.0)
 Config/Needs/website: rmarkdown
