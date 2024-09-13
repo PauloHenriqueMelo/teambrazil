@@ -39,6 +39,8 @@ process_sih_rd <- function(data) {
       TRUE ~ NA_character_
     )
     data$sex <- as.factor(data$SEXO)
+    data <- data %>% dplyr::select(-SEXO)
+
   }
 
 
@@ -58,12 +60,14 @@ process_sih_rd <- function(data) {
     )
 
     data$race <- as.factor(data$RACA_COR)
+    data <- data %>% dplyr::select(-RACA_COR)
   }
 
 
   # Process NASC variable (birth date)
   if ("NASC" %in% names(data)) {
     data$DOB <- as.Date(data$NASC, format = "%Y%m%d")
+    data <- data %>% dplyr::select(-NASC)
   }
 
   # Process admission (DT_INTER) and discharge (DT_SAIDA) dates
