@@ -26,6 +26,21 @@ test_that("sih_works at 2016, 6-7", {
 })
 
 
+test_that("sih contains Hospital_City at 2016, 6-7", {
+  # Process the SIH data
+  sih <- process_sih_rd(data = sih_rd_sample)
+
+  # Print the class of the returned object
+  print(class(sih))
+
+  # Ensure that the result is a data frame
+  expect_true("data.frame" %in% class(sih))
+
+  # Check if the 'Hospital_City' variable exists in the returned data frame
+  expect_true("Hospital_City" %in% colnames(sih), info = "'Hospital_City' variable is missing from the processed SIH data")
+})
+
+
 
 
 test_that("sim do works", {
