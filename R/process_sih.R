@@ -25,8 +25,6 @@ process_sih <- function(data, information_system = "SIH-RD", municipality_data =
   # Variables names
   variables_names <- names(data)
 
-  # Use dtplyr
-  data <- dtplyr::lazy_dt(data)
 
   if(information_system == "SIH-RD"){
 
