@@ -4,8 +4,8 @@
 #'
 #'
 #' @docType package
-#' @name pgssc_data
-#' @aliases pgssc_data
+#' @name pgsscdata
+#' @aliases pgsscdata
 #'
 #' @importFrom utils globalVariables
 #' @importFrom data.table := setDT fcase

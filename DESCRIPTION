@@ -1,4 +1,4 @@
-Package: pgssc_data
+Package: pgsscdata
 Title: Download and Process 'DataSUS' Files
 Version: 2.3.3
 Authors@R: 

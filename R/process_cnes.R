@@ -2472,7 +2472,7 @@ process_cnes <- function(data, information_system = c("CNES-ST", "CNES-PF"), nom
     if ("CBO" %in% variables_names) {
       data <- data %>%
         dplyr::mutate(CBO = as.character(.data$CBO)) %>%
-        dplyr::left_join(pgssc_data::tabCBO, by = c("CBO" = "cod"))
+        dplyr::left_join(pgsscdata::tabCBO, by = c("CBO" = "cod"))
     }
 
     # NOMEPROF

@@ -161,7 +161,7 @@ process_sia <- function(data, information_system = "SIA-PA", nome_proced = TRUE,
 
     # PA_PROC_NOME
     if(nome_proced == TRUE){
-      sigtab_temp <- pgssc_data::fetch_sigtab()
+      sigtab_temp <- pgsscdata::fetch_sigtab()
       data <- dplyr::left_join(data, sigtab_temp, by = c("PA_PROC_ID" = "COD"))
     }
 
@@ -213,7 +213,7 @@ process_sia <- function(data, information_system = "SIA-PA", nome_proced = TRUE,
 
     # Nome OCUPACAO
     if(nome_ocupacao == TRUE){
-      data <- dplyr::left_join(data, pgssc_data::tabCBO, by = c("PA_CBOCOD" = "cod"))
+      data <- dplyr::left_join(data, pgsscdata::tabCBO, by = c("PA_CBOCOD" = "cod"))
       data <- dplyr::rename(data, "ocupacao" = "nome")
     }
 
@@ -933,7 +933,7 @@ process_sia <- function(data, information_system = "SIA-PA", nome_proced = TRUE,
     if("PA_INE" %in% variables_names){
       data <- data %>%
         dplyr::mutate(PA_INE = as.character(.data$PA_INE)) %>%
-        dplyr::left_join(pgssc_data::equipe, by = c("PA_INE" = "COD"))
+        dplyr::left_join(pgsscdata::equipe, by = c("PA_INE" = "COD"))
     }
 
   }
