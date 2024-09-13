@@ -40,7 +40,6 @@ process_sih_rd <- function(data) {
     )
     data$sex <- as.factor(data$SEXO)
     data <- data %>% dplyr::select(-SEXO)
-
   }
 
   # Rename MUNIC_MOV to Hospital_CityCod in 'data'
