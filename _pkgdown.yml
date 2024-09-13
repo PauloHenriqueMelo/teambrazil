@@ -11,7 +11,7 @@ navbar:
 reference:
 - title: "The package"
   contents:
-  - microdatasus
+  - phmm2000
 - title: "Fetch data"
   contents:
   - fetch_datasus

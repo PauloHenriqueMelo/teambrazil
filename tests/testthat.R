@@ -1,4 +1,4 @@
 library(testthat)
-library(microdatasus)
+library(pgssc_data)
 
-test_check("microdatasus")
+test_check("pgssc_data")

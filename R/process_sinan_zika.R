@@ -219,12 +219,12 @@ process_sinan_zika <- function(data, municipality_data = TRUE){
 
   # ID_PAIS
   if ("ID_PAIS" %in% variables_names) {
-    data$ID_PAIS <- dplyr::left_join(data, microdatasus::paisnet, by = c("ID_PAIS" = "ID_PAIS"))$NM_PAIS
+    data$ID_PAIS <- dplyr::left_join(data, pgssc_data::paisnet, by = c("ID_PAIS" = "ID_PAIS"))$NM_PAIS
   }
 
   # ID_OCUPA_N
   if ("ID_OCUPA_N" %in% variables_names) {
-    data$ID_OCUPA_N <- factor(dplyr::left_join(data, microdatasus::tabCBO, by = c("ID_OCUPA_N" = "cod"))$nome)
+    data$ID_OCUPA_N <- factor(dplyr::left_join(data, pgssc_data::tabCBO, by = c("ID_OCUPA_N" = "cod"))$nome)
   }
 
   # CLASSI_FIN
@@ -307,7 +307,7 @@ process_sinan_zika <- function(data, municipality_data = TRUE){
 
   # COPAISINF
   if ("COPAISINF" %in% variables_names) {
-    data$COPAISINF <- dplyr::left_join(data, microdatasus::paisnet, by = c("COPAISINF" = "COPAISINF"))$NM_PAIS
+    data$COPAISINF <- dplyr::left_join(data, pgssc_data::paisnet, by = c("COPAISINF" = "COPAISINF"))$NM_PAIS
   }
 
   # DOENCA_TRA

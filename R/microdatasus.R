@@ -1,11 +1,11 @@
-#' microdatasus: Download and preprocess DataSUS files
+#' pgssc_data: Download and preprocess DataSUS files
 #'
 #' Downloads microdata files (DBC format) from DataSUS and imports the files for use.
 #'
 #'
 #' @docType package
-#' @name microdatasus
-#' @aliases microdatasus
+#' @name pgssc_data
+#' @aliases pgssc_data
 #'
 #' @importFrom utils globalVariables
 #' @importFrom data.table := setDT fcase

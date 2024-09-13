@@ -21,7 +21,7 @@ Desta forma, para garantir que você tem os dados de todos em eventos ocorridos 
 Exemplo: Para se computador os óbitos ocorridos no Acre em 2020, recomenda-se baixar os dados de 2019, 2020 e 2021.
 
 ```{r}
-library(microdatasus)
+library(pgssc_data)
 library(dplyr)
 library(lubridate)
 
@@ -63,7 +63,7 @@ Um modo de contornar este problema é a realizar o download e armazenar os resul
 ### Pacotes
 
 ```{r eval=FALSE}
-library(microdatasus)
+library(pgssc_data)
 library(tidyverse)
 library(dbplyr)
 library(DBI)
