@@ -41,31 +41,25 @@ process_sih_rd <- function(data) {
     data$SEXO <- as.factor(data$SEXO)
   }
 
-  # Process IDADE and COD_IDADE variables
-  if ("IDADE" %in% names(data) && "COD_IDADE" %in% names(data)) {
-    age <- as.numeric(data$IDADE)
-    data$IDADE <- dplyr::case_when(
-      data$COD_IDADE == "1" ~ age,                     # Age in years
-      data$COD_IDADE == "2" ~ age / 12,                # Age in months
-      data$COD_IDADE == "3" ~ age / 365,               # Age in days
-      data$COD_IDADE == "4" ~ age / (365 * 24),        # Age in hours
-      TRUE ~ NA_real_
-    )
-  }
 
   # Process RACA_COR variable
   if ("RACA_COR" %in% names(data)) {
+    # Ensure RACA_COR is treated as character for consistency
+    data$RACA_COR <- as.character(data$RACA_COR)
+
     data$RACA_COR <- dplyr::case_when(
-      data$RACA_COR == "1" ~ "White",
-      data$RACA_COR == "2" ~ "Black",
-      data$RACA_COR == "3" ~ "Brown",
-      data$RACA_COR == "4" ~ "Yellow",
-      data$RACA_COR == "5" ~ "Indigenous",
-      data$RACA_COR %in% c("0", "9") ~ NA_character_,
+      data$RACA_COR %in% c("1", "01") ~ "White",
+      data$RACA_COR %in% c("2", "02") ~ "Black",
+      data$RACA_COR %in% c("3", "03") ~ "Brown",
+      data$RACA_COR %in% c("4", "04") ~ "Yellow",
+      data$RACA_COR %in% c("5", "05") ~ "Indigenous",
+      data$RACA_COR %in% c("0", "9", "00", "09") ~ NA_character_,
       TRUE ~ NA_character_
     )
+
     data$RACA_COR <- as.factor(data$RACA_COR)
   }
+
 
   # Process NASC variable (birth date)
   if ("NASC" %in% names(data)) {
