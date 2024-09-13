@@ -29,6 +29,7 @@ Imports:
     magrittr,
     RCurl,
     read.dbc,
+    readr,
     rlang,
     stringi,
     tibble,

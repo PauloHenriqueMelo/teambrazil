@@ -52,6 +52,15 @@ process_sih_rd <- function(data) {
       dplyr::left_join(tabMun, by = "MUNIC_RES")
   }
 
+
+  if("MUNIC_MOV" %in% variables_names){
+    colnames(HospitalCity)[1] <- "MUNIC_MOV"
+    data <- data %>%
+      dplyr::mutate(MUNIC_MOV = as.numeric(.data$MUNIC_MOV)) %>%
+      dplyr::left_join(HospitalCity, by = "MUNIC_MOV")
+  }
+
+
   # Process RACA_COR variable
   if ("RACA_COR" %in% names(data)) {
     # Ensure RACA_COR is treated as character for consistency
