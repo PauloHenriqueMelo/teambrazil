@@ -1,5 +1,5 @@
 # Load the dataset from the 'data-raw' directory
-load(file = "data-raw/HospitalCity.rda")
+load(file = "data-raw/HospitalCity.rData")
 
 # Modify the 'HospitalCity' dataset as needed
 # For example, if you need to escape Unicode characters in the dataset:
