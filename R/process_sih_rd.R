@@ -52,17 +52,48 @@ process_sih_rd <- function(data) {
     data <- data %>% dplyr::select(-SEXO)
   }
 
-  # Rename MUNIC_MOV to Hospital_CityCod in 'data'
-  data <- data %>%
-    dplyr::rename(Hospital_CityCod = MUNIC_MOV)
 
-  # Ensure both columns are numeric
-  data$Hospital_CityCod <- as.numeric(data$Hospital_CityCod)
-  HospitalCity$Hospital_CityCod <- as.numeric(HospitalCity$Hospital_CityCod)
 
-  # Perform the left join
-  data <- data %>%
-    dplyr::left_join(HospitalCity, by = "Hospital_CityCod")
+
+  if ("MUNIC_MOV" %in% variable_names) {
+    # Rename MUNIC_MOV to Hospital_CityCod in 'data'
+    data <- data %>%
+      dplyr::rename(Hospital_CityCod = MUNIC_MOV)
+
+    # Ensure both columns are numeric
+    data$Hospital_CityCod <- as.numeric(data$Hospital_CityCod)
+    HospitalCity$Hospital_CityCod <- as.numeric(HospitalCity$Hospital_CityCod)
+
+    # Perform the left join
+    data <- data %>%
+      dplyr::left_join(HospitalCity, by = "Hospital_CityCod")
+  }
+
+
+  if ("MUNIC_RES" %in% variable_names) {
+    # Rename MUNIC_RES to Patient_CityCod in 'data'
+    data <- data %>%
+      dplyr::rename(Patient_CityCod = MUNIC_RES)
+
+    # Ensure both columns are numeric
+    data$Patient_CityCod <- as.numeric(data$Patient_CityCod)
+
+    # Rename the Hospital* variables to Patient* directly in HospitalCity
+    HospitalCity <- HospitalCity %>%
+      dplyr::rename_with(~ gsub("^Hospital", "Patient", .), starts_with("Hospital"))
+
+    # Ensure both columns are numeric
+    HospitalCity$Patient_CityCod <- as.numeric(HospitalCity$Patient_CityCod)
+
+    # Perform the left join with the modified HospitalCity dataset
+    data <- data %>%
+      dplyr::left_join(HospitalCity, by = "Patient_CityCod")
+  }
+
+
+
+
+
 
   # Process RACA_COR variable
   if ("RACA_COR" %in% names(data)) {
@@ -113,16 +144,55 @@ process_sih_rd <- function(data) {
   if("DIAS_PERM" %in% variables_names){
     data <- data %>%
       dplyr::mutate(LOS = as.numeric(.data$DIAS_PERM))
-      data <- data %>% dplyr::select(-DIAS_PERM)
+    data <- data %>% dplyr::select(-DIAS_PERM)
+  }
+
+  if("US_TOT" %in% variables_names){
+    data <- data %>%
+      dplyr::mutate(Total_Cost_USD = as.numeric(.data$US_TOT))
+    data <- data %>% dplyr::select(-US_TOT)
   }
 
 
-  # Process DIAS_PERM and US_TOT variables (numerical)
-  numeric_vars <- c("DIAS_PERM", "US_TOT")
-  for (var in numeric_vars) {
-    if (var %in% names(data)) {
-      data[[var]] <- as.numeric(data[[var]])
-    }
+  if("COBRANCA" %in% variables_names){
+    data <- data %>%
+      dplyr::mutate(COBRANCA = as.character(.data$COBRANCA)) %>%
+      dplyr::mutate(Outcome = dplyr::case_match(
+        .data$COBRANCA,
+        "11" ~ "Discharge cured",
+        "12" ~ "Discharge improved",
+        "14" ~ "Discharge at request",
+        "15" ~ "Discharge with return for patient follow-up",
+        "16" ~ "Discharge due to evasion",
+        "18" ~ "Discharge for other reasons",
+        "19" ~ "Discharge of acute patient in psychiatry",
+        "21" ~ "Stay due to disease-specific characteristics",
+        "22" ~ "Stay due to complications",
+        "23" ~ "Stay due to socio-familial impossibility",
+        "24" ~ "Stay for organ, tissue, cell donation - living donor",
+        "25" ~ "Stay for organ, tissue, cell donation - deceased donor",
+        "26" ~ "Stay due to procedure change",
+        "27" ~ "Stay due to reoperation",
+        "28" ~ "Stay for other reasons",
+        "29" ~ "Transfer to home hospitalization",
+        "32" ~ "Transfer to home hospitalization",
+        "31" ~ "Transfer to another facility",
+        "41" ~ "Death with Death Certificate issued by attending physician",
+        "42" ~ "Death with Death Certificate issued by the Medical Examiner's Office",
+        "43" ~ "Death with Death Certificate issued by the SVO",
+        "51" ~ "Administrative closure",
+        "61" ~ "Discharge of mother/puerpera and newborn",
+        "17" ~ "Discharge of mother/puerpera and newborn",
+        "62" ~ "Discharge of mother/puerpera and stay of newborn",
+        "13" ~ "Discharge of mother/puerpera and stay of newborn",
+        "63" ~ "Discharge of mother/puerpera and death of newborn",
+        "64" ~ "Discharge of mother/puerpera with fetal death",
+        "65" ~ "Death of pregnant woman and conceptus",
+        "66" ~ "Death of mother/puerpera and discharge of newborn",
+        "67" ~ "Death of mother/puerpera and stay of newborn",
+        .default = .data$COBRANCA
+      )) %>%
+      dplyr::mutate(Outcome = as.factor(.data$Outcome))
   }
 
   # Unescape unicode characters for all character columns

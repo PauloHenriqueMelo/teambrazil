@@ -320,47 +320,49 @@ process_sih <- function(data, information_system = "SIH-RD", municipality_data =
         dplyr::mutate(DT_SAIDA = as.Date(.data$DT_SAIDA, format = "%Y%m%d"))
     }
 
-    # COBRANCA (motivo de saída/permanência, portaria SAS 719)
+    # COBRANCA (reason for discharge/stay, SAS ordinance 719)
     if("COBRANCA" %in% variables_names){
       data <- data %>%
         dplyr::mutate(COBRANCA = as.character(.data$COBRANCA)) %>%
-        dplyr::mutate(COBRANCA = dplyr::case_match(
+        dplyr::mutate(Outcome = dplyr::case_match(
           .data$COBRANCA,
-          "11" ~ "Alta curado",
-          "12" ~ "Alta melhorado",
-          "14" ~ "Alta a pedido",
-          "15" ~ "Alta com previs\u00e3o de retorno p/acomp do paciente",
-          "16" ~ "Alta por evas\u00e3o",
-          "18" ~ "Alta por outros motivos",
-          "19" ~ "Alta de paciente agudo em psiquiatria",
-          "21" ~ "Perman\u00eancia por caracter\u00edsticas pr\u00f3prias da doen\u00e7a",
-          "22" ~ "Perman\u00eancia por intercorr\u00eancia",
-          "23" ~ "Perman\u00eancia por impossibilidade s\u00f3cio-familiar",
-          "24" ~ "Perman\u00eancia proc doa\u00e7\u00e3o \u00f3rg, tec, c\u00e9l-doador vivo",
-          "25" ~ "Perman\u00eancia proc doa\u00e7\u00e3o \u00f3rg, tec, c\u00e9l-doador morto",
-          "26" ~ "Perman\u00eancia por mudan\u00e7a de procedimento",
-          "27" ~ "Perman\u00eancia por reopera\u00e7\u00e3o",
-          "28" ~ "Perman\u00eancia por outros motivos",
-          "29" ~ "Transfer\u00eancia para interna\u00e7\u00e3o domiciliar",
-          "32" ~ "Transfer\u00eancia para interna\u00e7\u00e3o domiciliar",
-          "31" ~ "Transfer\u00eancia para outro estabelecimento",
-          "41" ~ "\u00d3bito com DO fornecida pelo m\u00e9dico assistente",
-          "42" ~ "\u00d3bito com DO fornecida pelo IML",
-          "43" ~ "\u00d3bito com DO fornecida pelo SVO",
-          "51" ~ "Encerramento administrativo",
-          "61" ~ "Alta da m\u00e3e/pu\u00e9rpera e do rec\u00e9m-nascido",
-          "17" ~ "Alta da m\u00e3e/pu\u00e9rpera e do rec\u00e9m-nascido",
-          "62" ~ "Alta da m\u00e3e/pu\u00e9rpera e perman\u00eancia rec\u00e9m-nascido",
-          "13" ~ "Alta da m\u00e3e/pu\u00e9rpera e perman\u00eancia rec\u00e9m-nascido",
-          "63" ~ "Alta da m\u00e3e/pu\u00e9rpera e \u00f3bito do rec\u00e9m-nascido",
-          "64" ~ "Alta da m\u00e3e/pu\u00e9rpera com \u00f3bito fetal",
-          "65" ~ "\u00d3bito da gestante e do concepto",
-          "66" ~ "\u00d3bito da m\u00e3e/pu\u00e9rpera e alta do rec\u00e9m-nascido",
-          "67" ~ "\u00d3bito da m\u00e3e/pu\u00e9rpera e perman\u00eancia rec\u00e9m-nascido",
+          "11" ~ "Discharge cured",
+          "12" ~ "Discharge improved",
+          "14" ~ "Discharge at request",
+          "15" ~ "Discharge with return for patient follow-up",
+          "16" ~ "Discharge due to evasion",
+          "18" ~ "Discharge for other reasons",
+          "19" ~ "Discharge of acute patient in psychiatry",
+          "21" ~ "Stay due to disease-specific characteristics",
+          "22" ~ "Stay due to complications",
+          "23" ~ "Stay due to socio-familial impossibility",
+          "24" ~ "Stay for organ, tissue, cell donation - living donor",
+          "25" ~ "Stay for organ, tissue, cell donation - deceased donor",
+          "26" ~ "Stay due to procedure change",
+          "27" ~ "Stay due to reoperation",
+          "28" ~ "Stay for other reasons",
+          "29" ~ "Transfer to home hospitalization",
+          "32" ~ "Transfer to home hospitalization",
+          "31" ~ "Transfer to another facility",
+          "41" ~ "Death with Death Certificate issued by attending physician",
+          "42" ~ "Death with Death Certificate issued by the Medical Examiner's Office",
+          "43" ~ "Death with Death Certificate issued by the SVO",
+          "51" ~ "Administrative closure",
+          "61" ~ "Discharge of mother/puerpera and newborn",
+          "17" ~ "Discharge of mother/puerpera and newborn",
+          "62" ~ "Discharge of mother/puerpera and stay of newborn",
+          "13" ~ "Discharge of mother/puerpera and stay of newborn",
+          "63" ~ "Discharge of mother/puerpera and death of newborn",
+          "64" ~ "Discharge of mother/puerpera with fetal death",
+          "65" ~ "Death of pregnant woman and conceptus",
+          "66" ~ "Death of mother/puerpera and discharge of newborn",
+          "67" ~ "Death of mother/puerpera and stay of newborn",
           .default = .data$COBRANCA
         )) %>%
-        dplyr::mutate(COBRANCA = as.factor(.data$COBRANCA))
+        dplyr::mutate(Outcome = as.factor(.data$Outcome))
     }
+
+
 
     # NATUREZA
     if("NATUREZA" %in% variables_names){
