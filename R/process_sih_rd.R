@@ -154,6 +154,7 @@ process_sih_rd <- function(data) {
   }
 
 
+  # COBRANCA (reason for discharge/stay, SAS ordinance 719)
   if("COBRANCA" %in% variables_names){
     data <- data %>%
       dplyr::mutate(COBRANCA = as.character(.data$COBRANCA)) %>%
@@ -192,8 +193,10 @@ process_sih_rd <- function(data) {
         "67" ~ "Death of mother/puerpera and stay of newborn",
         .default = .data$COBRANCA
       )) %>%
-      dplyr::mutate(Outcome = as.factor(.data$Outcome))
+      dplyr::mutate(Outcome = as.factor(.data$Outcome)) %>%
+      dplyr::select(-COBRANCA) # Remove COBRANCA column at the end
   }
+
 
   # Unescape unicode characters for all character columns
   char_cols <- sapply(data, is.character)
