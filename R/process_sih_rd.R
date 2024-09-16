@@ -18,10 +18,11 @@
 
 process_sih_rd <- function(data) {
 
+  utils::data("icd_codes", package = "pgsscdata")
+  utils::data("proc_rea", package = "pgsscdata")
 
   # Load the dataset from the downloaded file
   HospitalCity <- readr::read_csv("https://raw.githubusercontent.com/PauloHenriqueMelo/test/main/data/HospitalCity.csv")
-
 
 
 
@@ -38,7 +39,48 @@ process_sih_rd <- function(data) {
   # Keep only the variables that are present in the dataset
   available_vars <- intersect(variables_to_keep, names(data))
   data <- dplyr::select(data, all_of(available_vars))
+
   variables_names <- names(data)
+
+
+
+  # Process DIAG_PRINC variable
+  if ("DIAG_PRINC" %in% names(data)) {
+    # Ensure DIAG_PRINC is character
+    data$DIAG_PRINC <- as.character(data$DIAG_PRINC)
+
+    # Left join with the icd_codes dataset to get the descriptions
+    data <- data %>%
+      dplyr::left_join(icd_codes, by = c("DIAG_PRINC" = "code"))
+
+    data <- data %>%
+      dplyr::rename(ICD_10_MD = DIAG_PRINC)
+    # Optionally rename the Description column
+    data <- data %>%
+      dplyr::rename(Main_Diagnosis = Description)
+  }
+
+  # Process DIAG_PRINC variable
+  if ("PROC_REA" %in% names(data)) {
+    # Ensure DIAG_PRINC is character
+    data$PROC_REA <- as.character(data$PROC_REA)
+
+    # Left join with the icd_codes dataset to get the descriptions
+    data <- data %>%
+      dplyr::left_join(PROC_REA, by = c("PROC_REA" = "code"))
+
+    data <- data %>%
+      dplyr::rename(Procedure_Code = PROC_REA)
+    # Optionally rename the Description column
+    data <- data %>%
+      dplyr::rename(Main_Procedure = PROCEDURE)
+  }
+
+
+
+
+
+
   # Process SEXO variable
   if ("SEXO" %in% names(data)) {
     data$SEXO <- dplyr::case_when(
@@ -55,7 +97,7 @@ process_sih_rd <- function(data) {
 
 
 
-  if ("MUNIC_MOV" %in% variable_names) {
+  if ("MUNIC_MOV" %in% names(data)) {
     # Rename MUNIC_MOV to Hospital_CityCod in 'data'
     data <- data %>%
       dplyr::rename(Hospital_CityCod = MUNIC_MOV)
@@ -70,7 +112,7 @@ process_sih_rd <- function(data) {
   }
 
 
-  if ("MUNIC_RES" %in% variable_names) {
+  if ("MUNIC_RES" %in% names(data)){
     # Rename MUNIC_RES to Patient_CityCod in 'data'
     data <- data %>%
       dplyr::rename(Patient_CityCod = MUNIC_RES)
@@ -92,8 +134,18 @@ process_sih_rd <- function(data) {
 
 
 
-
-
+  # Process RACA_COR variable
+  if ("N_AIH" %in% names(data)) {
+    # Ensure RACA_COR is treated as character for consistency
+    data$ID <- as.character(data$N_AIH)
+    data <- data %>% dplyr::select(-N_AIH)
+  }
+  # Process RACA_COR variable
+  if ("DIAG_SECUN" %in% names(data)) {
+    # Ensure RACA_COR is treated as character for consistency
+    data$ICD_10_SD <- as.character(data$DIAG_SECUN)
+    data <- data %>% dplyr::select(-DIAG_SECUN)
+  }
 
   # Process RACA_COR variable
   if ("RACA_COR" %in% names(data)) {
@@ -141,61 +193,61 @@ process_sih_rd <- function(data) {
   }
 
   # DIAS_PERM
-  if("DIAS_PERM" %in% variables_names){
+  if("DIAS_PERM" %in% names(data)){
     data <- data %>%
       dplyr::mutate(LOS = as.numeric(.data$DIAS_PERM))
     data <- data %>% dplyr::select(-DIAS_PERM)
   }
 
-  if("US_TOT" %in% variables_names){
+  if("US_TOT" %in% names(data)){
     data <- data %>%
       dplyr::mutate(Total_Cost_USD = as.numeric(.data$US_TOT))
     data <- data %>% dplyr::select(-US_TOT)
   }
 
-
   # COBRANCA (reason for discharge/stay, SAS ordinance 719)
-  if("COBRANCA" %in% variables_names){
+  if("COBRANCA" %in% names(data)){
     data <- data %>%
       dplyr::mutate(COBRANCA = as.character(.data$COBRANCA)) %>%
-      dplyr::mutate(Outcome = dplyr::case_match(
-        .data$COBRANCA,
-        "11" ~ "Discharge cured",
-        "12" ~ "Discharge improved",
-        "14" ~ "Discharge at request",
-        "15" ~ "Discharge with return for patient follow-up",
-        "16" ~ "Discharge due to evasion",
-        "18" ~ "Discharge for other reasons",
-        "19" ~ "Discharge of acute patient in psychiatry",
-        "21" ~ "Stay due to disease-specific characteristics",
-        "22" ~ "Stay due to complications",
-        "23" ~ "Stay due to socio-familial impossibility",
-        "24" ~ "Stay for organ, tissue, cell donation - living donor",
-        "25" ~ "Stay for organ, tissue, cell donation - deceased donor",
-        "26" ~ "Stay due to procedure change",
-        "27" ~ "Stay due to reoperation",
-        "28" ~ "Stay for other reasons",
-        "29" ~ "Transfer to home hospitalization",
-        "32" ~ "Transfer to home hospitalization",
-        "31" ~ "Transfer to another facility",
-        "41" ~ "Death with Death Certificate issued by attending physician",
-        "42" ~ "Death with Death Certificate issued by the Medical Examiner's Office",
-        "43" ~ "Death with Death Certificate issued by the SVO",
-        "51" ~ "Administrative closure",
-        "61" ~ "Discharge of mother/puerpera and newborn",
-        "17" ~ "Discharge of mother/puerpera and newborn",
-        "62" ~ "Discharge of mother/puerpera and stay of newborn",
-        "13" ~ "Discharge of mother/puerpera and stay of newborn",
-        "63" ~ "Discharge of mother/puerpera and death of newborn",
-        "64" ~ "Discharge of mother/puerpera with fetal death",
-        "65" ~ "Death of pregnant woman and conceptus",
-        "66" ~ "Death of mother/puerpera and discharge of newborn",
-        "67" ~ "Death of mother/puerpera and stay of newborn",
-        .default = .data$COBRANCA
+      dplyr::mutate(outcome = dplyr::case_when(
+        .data$COBRANCA == "11" ~ "Discharge cured",
+        .data$COBRANCA == "12" ~ "Discharge improved",
+        .data$COBRANCA == "14" ~ "Discharge at request",
+        .data$COBRANCA == "15" ~ "Discharge with return for patient follow-up",
+        .data$COBRANCA == "16" ~ "Discharge due to evasion",
+        .data$COBRANCA == "18" ~ "Discharge for other reasons",
+        .data$COBRANCA == "19" ~ "Discharge of acute patient in psychiatry",
+        .data$COBRANCA == "21" ~ "Stay due to disease-specific characteristics",
+        .data$COBRANCA == "22" ~ "Stay due to complications",
+        .data$COBRANCA == "23" ~ "Stay due to socio-familial impossibility",
+        .data$COBRANCA == "24" ~ "Stay for organ, tissue, cell donation - living donor",
+        .data$COBRANCA == "25" ~ "Stay for organ, tissue, cell donation - deceased donor",
+        .data$COBRANCA == "26" ~ "Stay due to procedure change",
+        .data$COBRANCA == "27" ~ "Stay due to reoperation",
+        .data$COBRANCA == "28" ~ "Stay for other reasons",
+        .data$COBRANCA == "29" ~ "Transfer to home hospitalization",
+        .data$COBRANCA == "32" ~ "Transfer to home hospitalization",
+        .data$COBRANCA == "31" ~ "Transfer to another facility",
+        .data$COBRANCA == "41" ~ "Death with Death Certificate issued by attending physician",
+        .data$COBRANCA == "42" ~ "Death with Death Certificate issued by the Medical Examiner's Office",
+        .data$COBRANCA == "43" ~ "Death with Death Certificate issued by the SVO",
+        .data$COBRANCA == "51" ~ "Administrative closure",
+        .data$COBRANCA == "61" ~ "Discharge of mother/puerpera and newborn",
+        .data$COBRANCA == "17" ~ "Discharge of mother/puerpera and newborn",
+        .data$COBRANCA == "62" ~ "Discharge of mother/puerpera and stay of newborn",
+        .data$COBRANCA == "13" ~ "Discharge of mother/puerpera and stay of newborn",
+        .data$COBRANCA == "63" ~ "Discharge of mother/puerpera and death of newborn",
+        .data$COBRANCA == "64" ~ "Discharge of mother/puerpera with fetal death",
+        .data$COBRANCA == "65" ~ "Death of pregnant woman and conceptus",
+        .data$COBRANCA == "66" ~ "Death of mother/puerpera and discharge of newborn",
+        .data$COBRANCA == "67" ~ "Death of mother/puerpera and stay of newborn",
+        TRUE ~ .data$COBRANCA  # Default case to handle unknown values
       )) %>%
-      dplyr::mutate(Outcome = as.factor(.data$Outcome)) %>%
-      dplyr::select(-COBRANCA) # Remove COBRANCA column at the end
+      dplyr::mutate(outcome = as.factor(.data$outcome)) %>%
+      dplyr::select(-COBRANCA)  # Remove COBRANCA column
   }
+
+
 
 
   # Unescape unicode characters for all character columns
