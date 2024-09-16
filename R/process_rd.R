@@ -836,6 +836,23 @@ process_rd <- function(data) {
     data <- data %>% dplyr::select(-DIAG_SECUN)
   }
 
+
+  # IDENT
+  if("IDENT" %in% names(data)){
+    data <- data %>%
+      dplyr::mutate(IDENT = as.character(.data$IDENT)) %>%
+      dplyr::mutate(IDENT = dplyr::case_when(
+        IDENT %in% c("1", "01") ~ "Primary",
+        IDENT %in% c("3", "03") ~ "Continuation",
+        IDENT %in% c("5", "05") ~ "Long stay",
+        TRUE ~ IDENT
+      )) %>%
+      dplyr::mutate(IDENT = as.factor(IDENT))
+  }
+
+
+
+
   # Process RACA_COR variable
   if ("RACA_COR" %in% names(data)) {
     # Ensure RACA_COR is treated as character for consistency
