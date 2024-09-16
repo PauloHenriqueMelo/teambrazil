@@ -27,8 +27,8 @@ This dataset contains information about hospitals and their associated cities, i
 It can be used for various geographical and healthcare-related analyses.
 }
 \examples{
-data(hospitalcity)
-summary(hospitalcity)
+data(ibge)
+summary(ibge)
 
 }
 \keyword{datasets}

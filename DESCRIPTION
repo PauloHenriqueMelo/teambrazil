@@ -5,10 +5,11 @@ Authors@R:
     person(given = "Paulo",
            family = "Melo",
            email = "phmm2000@gmail.com",
+           role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-6147-5833"))
 URL: https://github.com/PauloHenriqueMelo/teambrazil
-BugReports: phmm2000@gmail.com
-Description: Downloads data files from 'DataSUS' health information systems from <ftp.datasus.gov.br> and process the data, including labeling categorical variables.
+BugReports: https://github.com/PauloHenriqueMelo/teambrazil/issues
+Description: Provides functions to download and process health information system data files from 'DataSUS' (<ftp.datasus.gov.br>), including labeling categorical variables.
 License: MIT + file LICENSE
 Encoding: UTF-8
 VignetteBuilder: knitr
@@ -19,21 +20,15 @@ RoxygenNote: 7.3.1
 Imports: 
     checkmate,
     cli,
-    readr,
     curl,
     data.table,
     dplyr,
-    dtplyr,
-    foreign,
-    lubridate,
     magrittr,
     RCurl,
     read.dbc,
-    rlang,
     stringi,
     tibble,
     utils,
-    zip
 Remotes:
     danicat/read.dbc        
 Suggests:
@@ -44,3 +39,4 @@ Config/testthat/edition: 3
 Depends: 
     R (>= 3.5.0)
 Config/Needs/website: rmarkdown
+

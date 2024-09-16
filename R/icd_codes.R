@@ -6,7 +6,6 @@
 #' \describe{
 #'   \item{code}{ICD code}
 #'   \item{Description}{Description of the ICD code}
-#'   \item{...}{Other variables if any}
 #' }
 #' @source \url{Your data source or reference here}
 "icd_codes"

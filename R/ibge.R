@@ -16,7 +16,7 @@
 #'
 #' @source \url{https://example-source-url.com}  # Replace with the real source if available
 #' @examples
-#' data(hospitalcity)
-#' summary(hospitalcity)
+#' data(ibge)
+#' summary(ibge)
 #'
 "ibge"

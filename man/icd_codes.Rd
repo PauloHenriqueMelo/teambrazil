@@ -9,7 +9,6 @@ A data frame with several rows and columns:
 \describe{
 \item{code}{ICD code}
 \item{Description}{Description of the ICD code}
-\item{...}{Other variables if any}
 }
 }
 \source{

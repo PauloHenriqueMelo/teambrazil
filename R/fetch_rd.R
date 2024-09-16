@@ -13,15 +13,7 @@
 #' @return A data frame with the downloaded and merged data from DataSUS, or `NULL` if the FTP server is down or there is no internet connection.
 #' @export
 #'
-#' @examples
-#' \dontrun{
-#' # Fetch SIH data for January 2021 for all states
-#' data <- fetch_sih_fiocruz(year = 2021, month = 1)
 #'
-#' # Fetch SIH data for January 2021 for a specific list of states
-#' data <- fetch_sih_fiocruz(year = 2021, month = 1, uf = c("SP", "MG", "RJ"))
-#' }
-
 fetch_rd <- function(year, month, uf = "all", timeout = 240, stop_on_error = FALSE, track_source = FALSE) {
 
   # Resets original timeout option on function exit

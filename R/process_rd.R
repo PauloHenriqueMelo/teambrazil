@@ -8,7 +8,7 @@
 #' @return A \code{data.frame} with the processed data.
 #' @examples
 #' # Example usage:
-#' process_sih_rd(sih_rd_sample)
+#' process_rd(sih_rd_sample)
 #' @import dplyr
 #' @importFrom dplyr mutate
 #' @export
@@ -18,12 +18,9 @@
 
 process_rd <- function(data) {
 
-  utils::data("icd_codes", package = "pgsscdata")
-  utils::data("proc_rea", package = "pgsscdata")
-  utils::data("ibge", package = "pgsscdata")
-  # Load the dataset from the downloaded file
-  #HospitalCity <- readr::read_csv("https://raw.githubusercontent.com/PauloHenriqueMelo/test/main/data/HospitalCity.csv")
-
+  utils::data("icd_codes", package = "teambrazil")
+  utils::data("proc_rea", package = "teambrazil")
+  utils::data("ibge", package = "teambrazil")
 
 
   # List of variables to keep if they exist in the dataset
@@ -40,7 +37,7 @@ process_rd <- function(data) {
   available_vars <- intersect(variables_to_keep, names(data))
   data <- dplyr::select(data, all_of(available_vars))
 
-  variables_names <- names(data)
+
 
 
 

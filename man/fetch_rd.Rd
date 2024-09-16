@@ -33,12 +33,3 @@ A data frame with the downloaded and merged data from DataSUS, or \code{NULL} if
 This function fetches and merges SIH (Hospital Information System) data from DataSUS for a specified list of states or for all states by default.
 It downloads \code{.dbc} files from DataSUS's FTP server, processes them one by one, and returns a combined dataset.
 }
-\examples{
-\dontrun{
-# Fetch SIH data for January 2021 for all states
-data <- fetch_sih_fiocruz(year = 2021, month = 1)
-
-# Fetch SIH data for January 2021 for a specific list of states
-data <- fetch_sih_fiocruz(year = 2021, month = 1, uf = c("SP", "MG", "RJ"))
-}
-}

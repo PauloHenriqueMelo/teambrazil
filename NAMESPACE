@@ -3,7 +3,6 @@
 export("%>%")
 export(fetch_rd)
 export(process_rd)
-export(process_sih)
 import(dplyr)
 importFrom(data.table,":=")
 importFrom(data.table,fcase)

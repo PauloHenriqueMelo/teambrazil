@@ -17,5 +17,5 @@ This function processes key SIH variables, converting them to appropriate format
 }
 \examples{
 # Example usage:
-process_sih_rd(sih_rd_sample)
+process_rd(sih_rd_sample)
 }

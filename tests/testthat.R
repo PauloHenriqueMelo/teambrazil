@@ -1,4 +1,4 @@
 library(testthat)
-library(pgsscdata)
+library(teambrazil)
 
-test_check("pgsscdata")
+test_check("teambrazil")
