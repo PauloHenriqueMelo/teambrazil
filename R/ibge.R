@@ -1,4 +1,4 @@
-#' HospitalCity: Dataset of Hospitals by City
+#' ibge: Dataset of Hospitals by City
 #'
 #' This dataset contains information about hospitals and their associated cities, including geographic coordinates and other attributes.
 #' It can be used for various geographical and healthcare-related analyses.
@@ -16,7 +16,7 @@
 #'
 #' @source \url{https://example-source-url.com}  # Replace with the real source if available
 #' @examples
-#' data(HospitalCity)
-#' summary(HospitalCity)
+#' data(hospitalcity)
+#' summary(hospitalcity)
 #'
-"HospitalCity"
+"ibge"

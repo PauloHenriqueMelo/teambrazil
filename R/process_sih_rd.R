@@ -20,9 +20,9 @@ process_sih_rd <- function(data) {
 
   utils::data("icd_codes", package = "pgsscdata")
   utils::data("proc_rea", package = "pgsscdata")
-
+  utils::data("ibge", package = "pgsscdata")
   # Load the dataset from the downloaded file
-  HospitalCity <- readr::read_csv("https://raw.githubusercontent.com/PauloHenriqueMelo/test/main/data/HospitalCity.csv")
+  #HospitalCity <- readr::read_csv("https://raw.githubusercontent.com/PauloHenriqueMelo/test/main/data/HospitalCity.csv")
 
 
 
@@ -65,9 +65,9 @@ process_sih_rd <- function(data) {
     # Ensure DIAG_PRINC is character
     data$PROC_REA <- as.character(data$PROC_REA)
 
-    # Left join with the icd_codes dataset to get the descriptions
+    # Left join with the proce_rea dataset to get the descriptions
     data <- data %>%
-      dplyr::left_join(PROC_REA, by = c("PROC_REA" = "code"))
+      dplyr::left_join(proc_rea, by = c("PROC_REA" = "code"))
 
     data <- data %>%
       dplyr::rename(Procedure_Code = PROC_REA)
@@ -104,11 +104,11 @@ process_sih_rd <- function(data) {
 
     # Ensure both columns are numeric
     data$Hospital_CityCod <- as.numeric(data$Hospital_CityCod)
-    HospitalCity$Hospital_CityCod <- as.numeric(HospitalCity$Hospital_CityCod)
+    ibge$Hospital_CityCod <- as.numeric(ibge$Hospital_CityCod)
 
     # Perform the left join
     data <- data %>%
-      dplyr::left_join(HospitalCity, by = "Hospital_CityCod")
+      dplyr::left_join(ibge, by = "Hospital_CityCod")
   }
 
 
@@ -121,15 +121,15 @@ process_sih_rd <- function(data) {
     data$Patient_CityCod <- as.numeric(data$Patient_CityCod)
 
     # Rename the Hospital* variables to Patient* directly in HospitalCity
-    HospitalCity <- HospitalCity %>%
+    ibge <- ibge %>%
       dplyr::rename_with(~ gsub("^Hospital", "Patient", .), starts_with("Hospital"))
 
     # Ensure both columns are numeric
-    HospitalCity$Patient_CityCod <- as.numeric(HospitalCity$Patient_CityCod)
+    ibge$Patient_CityCod <- as.numeric(ibge$Patient_CityCod)
 
     # Perform the left join with the modified HospitalCity dataset
     data <- data %>%
-      dplyr::left_join(HospitalCity, by = "Patient_CityCod")
+      dplyr::left_join(ibge, by = "Patient_CityCod")
   }
 
 

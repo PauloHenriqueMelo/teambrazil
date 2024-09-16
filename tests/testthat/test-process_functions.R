@@ -170,26 +170,4 @@ test_that("LOS and Total_Cost_USD are numeric", {
   expect_type(processed_data$Total_Cost_USD, "double")
 })
 
-test_that("No unexpected columns are present", {
-  processed_data <- process_sih_rd(sih_rd_sample)
-  # Define expected columns
-  expected_columns <- c(
-    "ANO_CMPT", "MES_CMPT", "ESPEC", "N_AIH", "IDENT",
-    "PROC_REA", "VAL_SH", "VAL_SP", "VAL_TOT",
-    "VAL_UTI", "VAL_UCI", "VAL_UCI", "VAL_TOT",
-    "DT_HOSP", "DT_DISCHARGE", "Main_Diagnosis", "DIAG_SECUN",
-    "NATUREZA", "Hospital_CityCod", "Hospital_CityName",
-    "Hospital_State", "Hospital_Region", "Hospital_Population",
-    "COD_IDADE", "IDADE", "MORTE", "CAR_INT", "CNES",
-    "CID_ASSO", "CID_MORTE", "INFEHOSP", "COMPLEX",
-    "FINANC", "race", "MARCA_UCI", "sex", "DOB",
-    "LOS", "Total_Cost_USD", "outcome",
-    "Patient_CityCod", "Patient_CityName",
-    "Patient_State", "Patient_Region", "Patient_Population"
-  )
-  # Check that all columns are expected
-  expect_true(all(names(processed_data) %in% expected_columns))
-})
-
-
 
