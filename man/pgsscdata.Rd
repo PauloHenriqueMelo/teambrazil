@@ -2,7 +2,8 @@
 % Please edit documentation in R/pgsscdata.R
 \docType{package}
 \name{pgsscdata}
-\alias{pgsscdata-package}
+\alias{teambrazil}
+\alias{teambrazil-package}
 \alias{pgsscdata}
 \title{pgssc_data: Download and preprocess DataSUS files}
 \description{
@@ -11,13 +12,17 @@ Downloads microdata files (DBC format) from DataSUS and imports the files for us
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/rfsaldanha/microdatasus}
-  \item \url{https://rfsaldanha.github.io/microdatasus/}
-  \item Report bugs at \url{https://github.com/rfsaldanha/microdatasus/issues}
+  \item \url{https://github.com/PauloHenriqueMelo/teambrazil}
+  \item Report bugs at \url{phmm2000@gmail.com}
 }
 
 }
 \author{
-\strong{Maintainer}: Raphael Saldanha \email{raphael.saldanha@fiocruz.br} (\href{https://orcid.org/0000-0003-0652-8466}{ORCID})
+\strong{Maintainer}: 
+
+Other contributors:
+\itemize{
+  \item Paulo Melo \email{phmm2000@gmail.com} (\href{https://orcid.org/0000-0001-6147-5833}{ORCID})
+}
 
 }
