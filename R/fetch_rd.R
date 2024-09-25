@@ -14,7 +14,7 @@
 #' @export
 #'
 #'
-fetch_rd <- function(year, month, uf = "all", timeout = 240, stop_on_error = FALSE, track_source = FALSE) {
+fetch_rd <- function(year, month, uf = "all", timeout = 500, stop_on_error = FALSE, track_source = FALSE) {
 
   # Resets original timeout option on function exit
   original_time_option <- getOption("timeout")
