@@ -3,32 +3,29 @@
 \docType{data}
 \name{ibge}
 \alias{ibge}
-\title{ibge: Dataset of Hospitals by City}
+\title{IBGE Dataset: City information for hospitals in Brazil}
 \format{
-A data frame with 5659 observations of 7 variables:
+A data frame with 5631 observations on the following 8 variables:
 \describe{
-\item{Hospital_CityCod}{Integer. The unique identifier for each hospital city.}
-\item{Hospital_City}{Character. Name of the city where the hospital is located.}
-\item{Hospital_State}{Character. Name of the state where the hospital is located.}
-\item{Hospital_CityLat}{Numeric. Latitude of the hospital city.}
-\item{Hospital_CityLon}{Numeric. Longitude of the hospital city.}
-\item{Hospital_CityAlt}{Integer. Altitude of the hospital city.}
-\item{Hospital_CityArea}{Numeric. Area of the hospital city in square kilometers.}
+\item{Hospital_CityCod}{City code}
+\item{Hospital_City}{City name}
+\item{Hospital_State}{State name}
+\item{Hospital_CityLat}{Latitude}
+\item{Hospital_CityLon}{Longitude}
+\item{Hospital_CityAlt}{Altitude}
+\item{Hospital_CityArea}{City area in km²}
+\item{Hospital_Region}{Geographic region (North, Northeast, Central-West, Southeast, South)}
 }
 }
 \source{
-\url{https://example-source-url.com}  # Replace with the real source if available
+Brazilian Institute of Geography and Statistics (IBGE)
 }
 \usage{
 ibge
 }
 \description{
-This dataset contains information about hospitals and their associated cities, including geographic coordinates and other attributes.
-It can be used for various geographical and healthcare-related analyses.
-}
-\examples{
-data(ibge)
-summary(ibge)
-
+This dataset contains city-level information for hospitals in Brazil,
+including city codes, names, geographic data, and now includes a \code{Hospital_Region}
+variable that assigns each hospital to one of the five geographic regions in Brazil.
 }
 \keyword{datasets}

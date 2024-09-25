@@ -961,6 +961,31 @@ process_rd <- function(data) {
   # Remove unused factor levels
   data <- droplevels(data)
 
+
+
+  col_order <- c(
+    "ID",                  # First variable (ID)
+    "DT_HOSP",             # Admission date
+    "DT_DISCHARGE",        # Discharge date
+    "Main_Procedure",      # Procedure name
+    "Main_Diagnosis",      # Main diagnosis
+    "ICD_10_SD",           # Secondary diagnosis
+    "sex",                 # Gender
+    "AGE_YEARS",           # Age in years
+    "AGE_UNSPECIFIED",     # Unspecified age
+    "Age_Code",            # Age code (Days, Months, Years, etc.)
+    "race",                # Race/ethnicity
+    "Total_Cost_USD",      # Total cost in USD
+    "Death",
+    "Birthday",
+    "outcome"
+  )
+
+  # Select columns in the desired order, keeping only those that exist in the dataset
+  col_order <- intersect(col_order, names(data))
+  data <- dplyr::select(data, all_of(col_order), everything())
+
+
   return(data)
 }
 

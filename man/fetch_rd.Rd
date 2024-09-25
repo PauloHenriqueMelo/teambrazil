@@ -8,7 +8,7 @@ fetch_rd(
   year,
   month,
   uf = "all",
-  timeout = 240,
+  timeout = 500,
   stop_on_error = FALSE,
   track_source = FALSE
 )
