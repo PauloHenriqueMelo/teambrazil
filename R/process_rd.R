@@ -891,12 +891,14 @@ process_rd <- function(data) {
   }
 
 
-  # DIAS_PERM
-  if("DIAS_PERM" %in% names(data)){
+
+
+  if("DIAS_PERM" %in% names(data)) {
     data <- data %>%
-      dplyr::mutate(LOS = as.numeric(.data$DIAS_PERM))
-    data <- data %>% dplyr::select(-DIAS_PERM)
+      dplyr::mutate(`LOS(days)` = as.numeric(.data$DIAS_PERM)) %>%
+      dplyr::select(-DIAS_PERM)  # Remove DIAS_PERM after conversion
   }
+
 
   if("US_TOT" %in% names(data)){
     data <- data %>%
@@ -904,47 +906,48 @@ process_rd <- function(data) {
     data <- data %>% dplyr::select(-US_TOT)
   }
 
-  # COBRANCA (reason for discharge/stay, SAS ordinance 719)
-  if("COBRANCA" %in% names(data)){
+  # COBRANCA (Reason for discharge/stay, according to SAS ordinance 719)
+  if ("COBRANCA" %in% names(data)) {
     data <- data %>%
       dplyr::mutate(COBRANCA = as.character(.data$COBRANCA)) %>%
       dplyr::mutate(outcome = dplyr::case_when(
-        .data$COBRANCA == "11" ~ "Discharge cured",
-        .data$COBRANCA == "12" ~ "Discharge improved",
-        .data$COBRANCA == "14" ~ "Discharge at request",
-        .data$COBRANCA == "15" ~ "Discharge with return for patient follow-up",
-        .data$COBRANCA == "16" ~ "Discharge due to evasion",
-        .data$COBRANCA == "18" ~ "Discharge for other reasons",
-        .data$COBRANCA == "19" ~ "Discharge of acute patient in psychiatry",
-        .data$COBRANCA == "21" ~ "Stay due to disease-specific characteristics",
-        .data$COBRANCA == "22" ~ "Stay due to complications",
-        .data$COBRANCA == "23" ~ "Stay due to socio-familial impossibility",
-        .data$COBRANCA == "24" ~ "Stay for organ, tissue, cell donation - living donor",
-        .data$COBRANCA == "25" ~ "Stay for organ, tissue, cell donation - deceased donor",
-        .data$COBRANCA == "26" ~ "Stay due to procedure change",
-        .data$COBRANCA == "27" ~ "Stay due to reoperation",
-        .data$COBRANCA == "28" ~ "Stay for other reasons",
-        .data$COBRANCA == "29" ~ "Transfer to home hospitalization",
-        .data$COBRANCA == "32" ~ "Transfer to home hospitalization",
-        .data$COBRANCA == "31" ~ "Transfer to another facility",
-        .data$COBRANCA == "41" ~ "Death with Death Certificate issued by attending physician",
-        .data$COBRANCA == "42" ~ "Death with Death Certificate issued by the Medical Examiner's Office",
-        .data$COBRANCA == "43" ~ "Death with Death Certificate issued by the SVO",
+        .data$COBRANCA == "11" ~ "Discharged: Cured",
+        .data$COBRANCA == "12" ~ "Discharged: Improved",
+        .data$COBRANCA == "14" ~ "Discharged: At request",
+        .data$COBRANCA == "15" ~ "Discharged: Return for follow-up",
+        .data$COBRANCA == "16" ~ "Discharged: Due to evasion",
+        .data$COBRANCA == "18" ~ "Discharged: Other reasons",
+        .data$COBRANCA == "19" ~ "Discharged: Acute patient in psychiatry",
+        .data$COBRANCA == "21" ~ "Extended stay: Disease-specific characteristics",
+        .data$COBRANCA == "22" ~ "Extended stay: Complications",
+        .data$COBRANCA == "23" ~ "Extended stay: Socio-familial reasons",
+        .data$COBRANCA == "24" ~ "Extended stay: Living donor (organ, tissue, cell donation)",
+        .data$COBRANCA == "25" ~ "Extended stay: Deceased donor (organ, tissue, cell donation)",
+        .data$COBRANCA == "26" ~ "Extended stay: Procedure change",
+        .data$COBRANCA == "27" ~ "Extended stay: Reoperation",
+        .data$COBRANCA == "28" ~ "Extended stay: Other reasons",
+        .data$COBRANCA == "29" ~ "Transferred: Home hospitalization",
+        .data$COBRANCA == "32" ~ "Transferred: Home hospitalization",
+        .data$COBRANCA == "31" ~ "Transferred: Another facility",
+        .data$COBRANCA == "41" ~ "Death: Certificate issued by attending physician",
+        .data$COBRANCA == "42" ~ "Death: Certificate issued by Medical Examiner",
+        .data$COBRANCA == "43" ~ "Death: Certificate issued by SVO",
         .data$COBRANCA == "51" ~ "Administrative closure",
-        .data$COBRANCA == "61" ~ "Discharge of mother/puerpera and newborn",
-        .data$COBRANCA == "17" ~ "Discharge of mother/puerpera and newborn",
-        .data$COBRANCA == "62" ~ "Discharge of mother/puerpera and stay of newborn",
-        .data$COBRANCA == "13" ~ "Discharge of mother/puerpera and stay of newborn",
-        .data$COBRANCA == "63" ~ "Discharge of mother/puerpera and death of newborn",
-        .data$COBRANCA == "64" ~ "Discharge of mother/puerpera with fetal death",
-        .data$COBRANCA == "65" ~ "Death of pregnant woman and conceptus",
-        .data$COBRANCA == "66" ~ "Death of mother/puerpera and discharge of newborn",
-        .data$COBRANCA == "67" ~ "Death of mother/puerpera and stay of newborn",
-        TRUE ~ .data$COBRANCA  # Default case to handle unknown values
+        .data$COBRANCA == "61" ~ "Discharged: Mother/puerpera and newborn",
+        .data$COBRANCA == "17" ~ "Discharged: Mother/puerpera and newborn",
+        .data$COBRANCA == "62" ~ "Discharged: Mother/puerpera, newborn stays",
+        .data$COBRANCA == "13" ~ "Discharged: Mother/puerpera, newborn stays",
+        .data$COBRANCA == "63" ~ "Discharged: Mother/puerpera, newborn death",
+        .data$COBRANCA == "64" ~ "Discharged: Mother/puerpera with fetal death",
+        .data$COBRANCA == "65" ~ "Death: Pregnant woman and conceptus",
+        .data$COBRANCA == "66" ~ "Death: Mother/puerpera, newborn discharged",
+        .data$COBRANCA == "67" ~ "Death: Mother/puerpera, newborn stays",
+        TRUE ~ .data$COBRANCA  # Default case for unknown values
       )) %>%
       dplyr::mutate(outcome = as.factor(.data$outcome)) %>%
-      dplyr::select(-COBRANCA)  # Remove COBRANCA column
+      dplyr::select(-COBRANCA)  # Remove COBRANCA column after processing
   }
+
 
   if ("VAL_SP" %in% names(data)) {
     data <- data %>%
@@ -966,7 +969,8 @@ process_rd <- function(data) {
   col_order <- c(
     "ID",                  # First variable (ID)
     "DT_HOSP",             # Admission date
-    "DT_DISCHARGE",        # Discharge date
+    "DT_DISCHARGE",
+    "LOS(days)",
     "Main_Procedure",      # Procedure name
     "Main_Diagnosis",      # Main diagnosis
     "ICD_10_SD",           # Secondary diagnosis
