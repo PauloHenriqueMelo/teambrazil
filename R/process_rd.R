@@ -27,7 +27,9 @@ process_rd <- function(data) {
   variables_to_keep <- c(
     "ANO_CMPT", "MES_CMPT", "ESPEC", "N_AIH", "IDENT",
     "MUNIC_RES", "NASC", "SEXO", "PROC_REA", "VAL_SH", "VAL_SP", "VAL_TOT",
-    "VAL_UTI", "US_TOT", "DT_INTER", "DT_SAIDA", "DIAG_PRINC", "DIAG_SECUN",
+    "VAL_UTI", "US_TOT", "DT_INTER", "DT_SAIDA", "DIAG_PRINC", "DIAG_SECUN", "DIAGSEC1", "TPDISEC1", "DIAGSEC2",
+    "TPDISEC2","DIAGSEC3", "TPDISEC3", "DIAGSEC4",
+    "TPDISEC4", "DIAGSEC5","TPDISEC5",
     "COBRANCA", "NATUREZA", "MUNIC_MOV", "COD_IDADE", "IDADE", "DIAS_PERM",
     "MORTE", "CAR_INT", "CNES","CID_MORTE", "ETNIA",
     "COMPLEX", "FINANC", "RACA_COR"
@@ -787,36 +789,43 @@ process_rd <- function(data) {
 
 
   if ("MUNIC_MOV" %in% names(data)) {
-    # Rename MUNIC_MOV to Hospital_CityCod in 'data'
+    # Renomeia MUNIC_MOV para Hospital_CityCod em 'data'
     data <- data %>%
       dplyr::rename(Hospital_CityCod = MUNIC_MOV)
 
-    # Ensure both columns are numeric
+    # Converte ambas as colunas para numérico
     data$Hospital_CityCod <- as.numeric(data$Hospital_CityCod)
     ibge$Hospital_CityCod <- as.numeric(ibge$Hospital_CityCod)
 
-    # Perform the left join
+    # Garante que se o código começar com "53", ele seja alterado para "530010"
+    data <- data %>%
+      dplyr::mutate(Hospital_CityCod = ifelse(substr(Hospital_CityCod, 1, 2) == "53", 530010, Hospital_CityCod))
+
+    # Realiza o left join
     data <- data %>%
       dplyr::left_join(ibge, by = "Hospital_CityCod")
   }
 
-
-  if ("MUNIC_RES" %in% names(data)){
-    # Rename MUNIC_RES to Patient_CityCod in 'data'
+  if ("MUNIC_RES" %in% names(data)) {
+    # Renomeia MUNIC_RES para Patient_CityCod em 'data'
     data <- data %>%
       dplyr::rename(Patient_CityCod = MUNIC_RES)
 
-    # Ensure both columns are numeric
+    # Converte a coluna Patient_CityCod para numérico
     data$Patient_CityCod <- as.numeric(data$Patient_CityCod)
 
-    # Rename the Hospital* variables to Patient* directly in HospitalCity
+    # Renomeia as variáveis de Hospital* para Patient* diretamente em ibge
     ibge <- ibge %>%
       dplyr::rename_with(~ gsub("^Hospital", "Patient", .), starts_with("Hospital"))
 
-    # Ensure both columns are numeric
+    # Converte a coluna Patient_CityCod de ibge para numérico
     ibge$Patient_CityCod <- as.numeric(ibge$Patient_CityCod)
 
-    # Perform the left join with the modified HospitalCity dataset
+    # Garante que se o código começar com "53", ele seja alterado para "530010"
+    data <- data %>%
+      dplyr::mutate(Patient_CityCod = ifelse(substr(Patient_CityCod, 1, 2) == "53", 530010, Patient_CityCod))
+
+    # Realiza o left join com o dataset ibge modificado
     data <- data %>%
       dplyr::left_join(ibge, by = "Patient_CityCod")
   }
