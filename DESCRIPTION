@@ -13,7 +13,7 @@ Description: Provides functions to download and process health information syste
 License: MIT + file LICENSE
 Encoding: UTF-8
 VignetteBuilder: knitr
-LazyData: true
+LazyData: false
 LazyDataCompression: xz
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
