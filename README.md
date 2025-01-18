@@ -1,8 +1,7 @@
 # teambrazil
 
-**teambrazil** is an R package designed to download and preprocess microdata from Brazil’s Hospital Information System (SIH), specifically the RD (internment) files from [DataSUS](http://www.datasus.gov.br). It is similar in purpose to [microdatasus](https://github.com/rfsaldanha/microdatasus) but is **entirely in English**, offers a simplified workflow for specifying monthly data pulls, and provides slightly different variable labeling conventions.
+**teambrazil** is an R package designed to download and preprocess microdata from Brazil’s Hospital Information System (SIH), specifically the RD (internment) files from [DataSUS](http://www.datasus.gov.br). With this package, you can:
 
-With **teambrazil**, you can:
 - Download raw `.dbc` files from DataSUS’s FTP server for one or more Brazilian states and a specific **year-month**.
 - Seamlessly merge data from multiple states into a single `data.frame`.
 - Convert or label key SIH variables (e.g., diagnoses, procedures, race, sex) into human-readable categories.
@@ -13,16 +12,16 @@ With **teambrazil**, you can:
 ## Table of Contents
 
 1. [Installation](#installation)  
-2. [Differences from `microdatasus`](#differences-from-microdatasus)  
-3. [Usage Overview](#usage-overview)  
+2. [Usage Overview](#usage-overview)  
    1. [Fetching Data with `fetch_rd()`](#fetching-data-with-fetch_rd)  
       - [Function Arguments](#function-arguments)  
       - [Download Examples](#download-examples)  
    2. [Processing Data with `process_rd()`](#processing-data-with-process_rd)  
       - [Processing Examples](#processing-examples)  
-4. [List of Brazilian State Codes](#list-of-brazilian-state-codes)  
-5. [Troubleshooting](#troubleshooting)  
-6. [Acknowledgments](#acknowledgments)  
+      - [Example Output](#example-output)  
+3. [List of Brazilian State Codes](#list-of-brazilian-state-codes)  
+4. [Differences from `microdatasus`](#differences-from-microdatasus)  
+5. [Acknowledgments](#acknowledgments)  
 
 ---
 
@@ -56,29 +55,6 @@ packageVersion("teambrazil")
 
 ---
 
-## Differences from `microdatasus`
-
-If you’ve used [microdatasus](https://github.com/rfsaldanha/microdatasus) before, here are the main differences:
-
-1. **Specifying Date Ranges**  
-   - **microdatasus**: You provide a starting year/month and an ending year/month (e.g., `year_start = 2013, year_end = 2014`) and the function loops across each intermediate time period.  
-   - **teambrazil**: You specify **a single year and month** at a time in `fetch_rd()`. If you need multiple months, call `fetch_rd()` in a loop or for each relevant month.  
-
-2. **Package Language**  
-   - **microdatasus** is in Portuguese and uses function names like `process_sih()`.  
-   - **teambrazil** is written and documented in English. For example, `process_rd()` produces output with English column labels.
-
-3. **Preprocessing**  
-   - Both packages label and transform raw SIH data. **teambrazil** uses English-friendly schemes, such as renaming `RACA_COR` to `race`, `SEXO` to `sex`, etc.  
-   - In **microdatasus**, functions like `process_sih()` handle preprocessing.  
-   - In **teambrazil**, use `process_rd()` for the RD dataset specifically.
-
-4. **Focus on RD Files**  
-   - **microdatasus** supports multiple information systems (SIM, SINASC, SIH, CNES, etc.).  
-   - **teambrazil** is specialized for **SIH-RD** data.
-
----
-
 ## Usage Overview
 
 This package provides **two main functions**:
@@ -96,37 +72,39 @@ fetch_rd() ---> returns raw data frame ---> process_rd() ---> returns processed 
 
 ### Fetching Data with `fetch_rd()`
 
+The `fetch_rd()` function allows you to download SIH data from DataSUS for a specified year, month, and one or more Brazilian states. By default, it fetches data for **all states**.
+
 ```r
 fetch_rd(
-  year,
-  month,
-  uf = "all",
-  timeout = 500,
-  stop_on_error = FALSE,
+  year, 
+  month, 
+  uf = "all", 
+  timeout = 500, 
+  stop_on_error = FALSE, 
   track_source = FALSE
 )
 ```
 
 #### Function Arguments
 
-- **year**: Numeric value (e.g., `2020`). Must be >= 1996.
-- **month**: Numeric value from `1` to `12` (January to December).
-- **uf**: Federative unit(s) for data:
+- **year** (required): Numeric value (e.g., `2020`). Must be >= 1996.
+- **month** (required): Numeric value from `1` to `12` (January to December).
+- **uf** (optional, default = "all"): Federative unit(s) for data:
   - `"all"` (default): Fetches data for all Brazilian states.
   - A character vector of state codes, e.g., `c("SP", "RJ")`.
-- **timeout**: Maximum time (seconds) to wait for downloads. Default: `500`.
-- **stop_on_error**: If `TRUE`, stops on the first error. Default: `FALSE`.
-- **track_source**: If `TRUE`, adds a `source` column with file names.
+  - A single state code, e.g., `"MG"`.
+- **timeout** (optional, default = `500`): Maximum time (seconds) to wait for downloads.
+- **stop_on_error** (optional, default = `FALSE`): If `TRUE`, stops on the first error during downloads.
+- **track_source** (optional, default = `FALSE`): If `TRUE`, adds a `source` column with file names.
 
 #### Download Examples
 
-**Example 1: All States**
+**Example 1: All States (Default)**
 
 ```r
 my_data_raw <- fetch_rd(
   year  = 2020,
-  month = 1,
-  uf    = "all"
+  month = 1
 )
 ```
 
@@ -179,6 +157,19 @@ names(my_data_processed)
 # [7] "Main_Procedure" "Main_Diagnosis" "race"
 ```
 
+#### Example Output
+
+Below is an example of the processed data:
+
+| Year_Competency | Month_Competency | ID           | DT_HOSP     | DT_DISCHARGE | LOS(days) | Main_Procedure                          | Main_Diagnosis                               | ICD_10_MD | SecondaryDiagnosis | sex    | AGE_YEARS | Age_Code | race  | Total_Cost_USD | Death | outcome                 |
+|------------------|------------------|--------------|-------------|--------------|-----------|-----------------------------------------|---------------------------------------------|-----------|--------------------|--------|-----------|----------|-------|----------------|-------|------------------------|
+| 2014             | 12               | 3514121633264| 2014-12-07  | 2014-12-15   | 8         | Surgical treatment of trochanter fracture | Pertrochanteric fracture                    | S721      | W189               | Female | 81        | Years    | White | 510.38         | No    | Discharged: Improved   |
+| 2014             | 12               | 3514121633319| 2014-12-07  | 2014-12-09   | 2         | Treatment with multiple surgeries        | Ventral hernia without obstruction or gangrene | K439      | K429               | Male   | 51        | Years    | Black | 345.94         | No    | Discharged: Improved   |
+| 2014             | 12               | 3514121633320| 2014-12-07  | 2014-12-09   | 2         | Videolaparoscopic cholecystectomy        | Gallbladder stone without cholecystitis      | K802      | <NA>               | Female | 41        | Years    | Brown | 272.57         | No    | Discharged: Improved   |
+| 2014             | 12               | 3514121633330| 2014-12-07  | 2014-12-11   | 4         | Videolaparoscopic cholecystectomy        | Gallbladder stone without cholecystitis      | K802      | <NA>               | Female | 63        | Years    | White | 373.80         | No    | Discharged: Improved   |
+
+This output illustrates how `process_rd()` simplifies the raw DataSUS data into a tidy, English-labeled format ready for analysis.
+
 ---
 
 ## List of Brazilian State Codes
@@ -193,11 +184,26 @@ RS, RO, RR, SC, SP, SE, TO
 
 ---
 
-## Troubleshooting
+## Differences from `microdatasus`
 
-1. **Download Failures**: Ensure your internet connection is stable and DataSUS’s FTP server is up.
-2. **Timeout Issues**: Increase the `timeout` value if needed.
-3. **Encoding Errors**: Verify your R session’s locale settings.
+If you’ve used [microdatasus](https://github.com/rfsaldanha/microdatasus) before, here are the main differences:
+
+1. **Specifying Date Ranges**  
+   - **microdatasus**: You provide a starting year/month and an ending year/month (e.g., `year_start = 2013, year_end = 2014`) and the function loops across each intermediate time period.  
+   - **teambrazil**: You specify **a single year and month** at a time in `fetch_rd()`. If you need multiple months, call `fetch_rd()` in a loop or for each relevant month.  
+
+2. **Package Language**  
+   - **microdatasus** is in Portuguese and uses function names like `process_sih()`.  
+   - **teambrazil** is written and documented in English. For example, `process_rd()` produces output with English column labels.
+
+3. **Preprocessing**  
+   - Both packages label and transform raw SIH data. **teambrazil** uses English-friendly schemes, such as renaming `RACA_COR` to `race`, `SEXO` to `sex`, etc.  
+   - In **microdatasus**, functions like `process_sih()` handle preprocessing.  
+   - In **teambrazil**, use `process_rd()` for the RD dataset specifically.
+
+4. **Focus on RD Files**  
+   - **microdatasus** supports multiple information systems (SIM, SINASC, SIH, CNES, etc.).  
+   - **teambrazil** is specialized for **SIH-RD** data.
 
 ---
 
