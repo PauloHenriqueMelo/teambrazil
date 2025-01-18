@@ -458,26 +458,27 @@ process_rd <- function(data) {
 
   # ------------------------ Final Column Order -------------------------------
   col_order <- c(
-    "ID",                  # 1
-    "DT_HOSP",             # 2
-    "DT_DISCHARGE",        # 3
-    "LOS(days)",           # 4
-    "Main_Procedure",      # 5
-    "Main_Diagnosis",
-    "ICD_10_MD",# 6
-    "SecondaryDiagnosis",  # 7
-    "sex",                 # 8
-    "AGE_YEARS",           # 9
-    "AGE_UNSPECIFIED",     # 10
-    "Age_Code",            # 11
-    "race",                # 12
-    "Total_Cost_USD",      # 13
-    "Death",
-    "ICD_Death",# 14
-    "Birthday",            # 15
-    "outcome"              # 16
+    "Year_Competency",     # 1
+    "Month_Competency",    # 2
+    "ID",                  # 3
+    "DT_HOSP",             # 4
+    "DT_DISCHARGE",        # 5
+    "LOS(days)",           # 6
+    "Main_Procedure",      # 7
+    "Main_Diagnosis",      # 8
+    "ICD_10_MD",           # 9
+    "SecondaryDiagnosis",  # 10
+    "sex",                 # 11
+    "AGE_YEARS",           # 12
+    "AGE_UNSPECIFIED",     # 13
+    "Age_Code",            # 14
+    "race",                # 15
+    "Total_Cost_USD",      # 16
+    "Death",               # 17
+    "ICD_Death",           # 18
+    "Birthday",            # 19
+    "outcome"              # 20
   )
-
   # Select them in the desired order, then everything else
   col_order <- intersect(col_order, names(data))
   data <- dplyr::select(data, dplyr::all_of(col_order), dplyr::everything())
