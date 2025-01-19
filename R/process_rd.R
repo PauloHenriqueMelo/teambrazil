@@ -433,6 +433,17 @@ process_rd <- function(data) {
 
     data <- data %>% dplyr::left_join(ibge, by = "Hospital_CityCod")
   }
+  # ------------------------ SURGICAL MANAGEMENT ------------------------
+  # (Place this section after the code block where Procedure_Code is created)
+  if ("Procedure_Code" %in% names(data)) {
+    data <- data %>%
+      dplyr::mutate(Surgical_Management = NA_character_) %>%
+      dplyr::mutate(Surgical_Management = dplyr::case_when(
+        stringr::str_starts(.data$Procedure_Code, "04")   ~ "Yes",
+        stringr::str_starts(.data$Procedure_Code, "0505") ~ "Yes",
+        TRUE                                             ~ "No"
+      ))
+  }
 
   #  (Patient_CityCod)
   if ("MUNIC_RES" %in% names(data)) {
@@ -464,7 +475,9 @@ process_rd <- function(data) {
     "DT_HOSP",             # 4
     "DT_DISCHARGE",        # 5
     "LOS(days)",           # 6
-    "Main_Procedure",      # 7
+    "Main_Procedure",
+    "Procedure_Code",
+    "Surgical_Management",
     "Main_Diagnosis",      # 8
     "ICD_10_MD",           # 9
     "SecondaryDiagnosis",  # 10
