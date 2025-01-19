@@ -492,7 +492,7 @@ process_rd <- function(data) {
     "Birthday",            # 19
     "outcome"              # 20
   )
-  # Select them in the desired order, then everything else
+  # Select them in the desired order, then everything elsee
   col_order <- intersect(col_order, names(data))
   data <- dplyr::select(data, dplyr::all_of(col_order), dplyr::everything())
 
