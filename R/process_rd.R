@@ -107,7 +107,7 @@ label_raca_cor <- function(data, col_name = "RACA_COR") {
       RACA_COR %in% c("1", "01") ~ "White",
       RACA_COR %in% c("2", "02") ~ "Black",
       RACA_COR %in% c("3", "03") ~ "Brown",
-      RACA_COR %in% c("4", "04") ~ "Yellow",
+      RACA_COR %in% c("4", "04") ~ "Asian",
       RACA_COR %in% c("5", "05") ~ "Indigenous",
       RACA_COR %in% c("0", "9", "00", "09") ~ NA_character_,
       TRUE ~ NA_character_
